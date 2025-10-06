@@ -88,9 +88,14 @@ public final class TuningOpModes {
                 return pl.driver.getEncoderY();
             }
 
+            //FIXME: Remove the surgically applied bandaid
+            // function getHeadingVelocity should take a single UnnormalizedAngleUnit parameter
+            // this was causing an error due to the superclass not having this parameter
+            // I removed the parameter and just made the function permanently spit out degrees
+            // which could be catastrophically bad but its the only way I could get it working
             @Override
-            public float getHeadingVelocity(UnnormalizedAngleUnit unit) {
-                return (float) pl.driver.getHeadingVelocity(unit);
+            public float getHeadingVelocity() {
+                return (float) pl.driver.getHeadingVelocity(UnnormalizedAngleUnit.DEGREES);
             }
 
             @Override
@@ -180,7 +185,7 @@ public final class TuningOpModes {
                 }
 
                 return new DriveView(
-                    DriveType.MECANUM,
+                        DriveType.MECANUM,
                         MecanumDrive.PARAMS.inPerTick,
                         MecanumDrive.PARAMS.maxWheelVel,
                         MecanumDrive.PARAMS.minProfileAccel,
