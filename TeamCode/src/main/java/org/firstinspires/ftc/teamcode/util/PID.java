@@ -22,9 +22,13 @@ public class PID {
         kd = d;
     }
 
-    public double PIDControl(double error) {
+    public double PIDControl(double position, double target) {
 
-        if (!init) { // resetting values if this is the first loop
+        // calculating error based on proximity to target position
+        double error = target - position;
+
+        // resetting values if this is the first loop
+        if (!init) {
             lastError = error;
             timer.reset();
             integralSum = 0;
