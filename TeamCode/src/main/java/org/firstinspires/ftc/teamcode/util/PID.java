@@ -10,16 +10,17 @@ public class PID {
     private double ki;  // integral modifier
     private double kd;  // derivative modifier
     private double integralSum = 0;
-    private final double INTEGRAL_MAX = 10000; // Used to limit integral term from getting too high
+    private double INTEGRAL_MAX; // Used to limit integral term from getting too high
     private double lastError = 0; // used to futz integral and derivative term
     private double lastTime = 0; // used to futz derivative term
     ElapsedTime timer = new ElapsedTime();
 
     // constructor
-    public PID (double p, double i, double d) {
+    public PID (double p, double i, double d, double imax) {
         kp = p;
         ki = i;
         kd = d;
+        INTEGRAL_MAX = imax;
     }
 
     public double PIDControl(double position, double target) {
@@ -43,7 +44,7 @@ public class PID {
         // calculating integral term as we would a riemann sum
         integralSum += ki * error * (time - lastTime);
 
-        // limiting integral term from going too high
+        // capping integral term
         if (integralSum > INTEGRAL_MAX) {
             integralSum = INTEGRAL_MAX;
         }
