@@ -32,12 +32,13 @@ public class TankDrive2026 extends OpMode {
         leftLaunchServo = hardwareMap.get(CRServo.class, "launchLeftServo");
         rightLaunchServo = hardwareMap.get(CRServo.class, "launchRightServo");
         telemetry.addData("Hardware: ", "Initialized");
-    }
-    @Override
-    public void loop() {
+
         launchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftLaunchServo.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+    @Override
+    public void loop() {
         //basic driving
         double leftPower = -gamepad1.left_stick_y;
         double rightPower = gamepad1.right_stick_y;
@@ -57,6 +58,9 @@ public class TankDrive2026 extends OpMode {
         }
         if (toggle) {
             launchMotor.setVelocity(TICK_PER_SECOND);
+        }
+        else {
+            launchMotor.setVelocity(0);
         }
         double servoPower = gamepad2.left_stick_y;
         leftLaunchServo.setPower(servoPower);
