@@ -15,14 +15,15 @@ public class TankDrive2026 extends OpMode {
     private DcMotorEx launchMotor;
     private CRServo leftLaunchServo;
     private CRServo rightLaunchServo;
+    private Servo leftPosControl;
+    private Servo rightPosControl;
     private double speedControl = 0.4;
+    private double TARGET_RPM = 3000;
     private final double WHEEL_WHEEL_DIAMETER = 4.094; //in inches
     private final double TICKS_PER_REVOLUTION_WHEELS = 2000; //for wheels
     private final double FLYWHEEL_DIAMETER = 3.78;
     private final double FLYWHEEL_TICKS_PER_REVOLUTION = 28;
-    private final double TICK_PER_SECOND = FLYWHEEL_TICKS_PER_REVOLUTION * 100; //ticks*rpm/60
     boolean toggle = false;
-    boolean servoToggle = false;
     private double max = 0;
     @Override
     public void init(){
@@ -31,6 +32,8 @@ public class TankDrive2026 extends OpMode {
         launchMotor = hardwareMap.get(DcMotorEx.class, "launchLaunchMotor");
         leftLaunchServo = hardwareMap.get(CRServo.class, "launchLeftServo");
         rightLaunchServo = hardwareMap.get(CRServo.class, "launchRightServo");
+        leftPosControl = hardwareMap.get(Servo.class, "leftPos");
+        rightPosControl = hardwareMap.get(Servo.class, "rightPos");
         telemetry.addData("Hardware: ", "Initialized");
 
         launchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -46,7 +49,6 @@ public class TankDrive2026 extends OpMode {
         left.setPower(-leftPower);
         right.setPower(-rightPower);
         //mounted mechanism mechanisms
-        //TODO: fix this by making the trigger toggle a boolean and the velocity dependent on said boolean
 
         if (gamepad2.left_trigger > 0) //start flywheel
         {
@@ -56,8 +58,11 @@ public class TankDrive2026 extends OpMode {
         {
             toggle = false;
         }
+
+        double TICKS_PER_SECOND = FLYWHEEL_TICKS_PER_REVOLUTION * TARGET_RPM / 60;
+
         if (toggle) {
-            launchMotor.setVelocity(TICK_PER_SECOND);
+            launchMotor.setVelocity(TICKS_PER_SECOND);
         }
         else {
             launchMotor.setVelocity(0);
@@ -65,5 +70,30 @@ public class TankDrive2026 extends OpMode {
         double servoPower = gamepad2.left_stick_y;
         leftLaunchServo.setPower(servoPower);
         rightLaunchServo.setPower(servoPower);
+
+        //emergency brake to avoid Stanley Time
+        if (gamepad1.b) {
+            left.setPower(0);
+            right.setPower(0);
+            launchMotor.setVelocity(0);
+            leftLaunchServo.setPower(0);
+            rightLaunchServo.setPower(0);
+        }
+        double servoPos = .8;
+        if (gamepad1.left_trigger > 0)
+        {
+            leftPosControl.setPosition(servoPos);
+            rightPosControl.setPosition(1-servoPos);
+            TARGET_RPM = 3700;
+        }
+        else if (gamepad1.right_trigger > 0)
+        {
+            leftPosControl.setPosition(0);
+            rightPosControl.setPosition(1);
+            TARGET_RPM = 3000;
+        }
+        telemetry.addData("rightPosition: ", rightPosControl.getPosition());
+        telemetry.addData("leftPosition: ", leftPosControl.getPosition());
+        telemetry.update();
     }
 }
