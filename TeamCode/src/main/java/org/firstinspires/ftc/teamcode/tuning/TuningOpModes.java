@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.RoadRunner.tuning;
+package org.firstinspires.ftc.teamcode.tuning;
 
 import androidx.annotation.NonNull;
 
@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeManager;
 import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 import org.firstinspires.ftc.robotcore.internal.opmode.OpModeMeta;
 import org.firstinspires.ftc.teamcode.MecanumDrive;
@@ -88,9 +89,10 @@ public final class TuningOpModes {
                 return pl.driver.getEncoderY();
             }
 
+            //TODO: this is dumb
             @Override
-            public float getHeadingVelocity(UnnormalizedAngleUnit unit) {
-                return (float) pl.driver.getHeadingVelocity(unit);
+            public float getHeadingVelocity() {
+                return (float) pl.driver.getHeadingVelocity(UnnormalizedAngleUnit.RADIANS);
             }
 
             @Override
