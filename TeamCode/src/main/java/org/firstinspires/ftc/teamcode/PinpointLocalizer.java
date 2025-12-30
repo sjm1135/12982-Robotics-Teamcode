@@ -12,7 +12,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.UnnormalizedAngleUnit;
 
 import java.util.Objects;
-
+/*
+for the love of all that is good and holy avoid this class,
+idk what was up with it but in order for the code to compile
+we had to do something weird to its parameters
+just pretend its not here and we don't have access to it
+ */
 @Config
 public final class PinpointLocalizer implements Localizer {
     public static class Params {

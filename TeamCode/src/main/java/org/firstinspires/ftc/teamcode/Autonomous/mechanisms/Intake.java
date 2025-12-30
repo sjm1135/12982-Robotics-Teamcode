@@ -23,7 +23,7 @@ public class Intake {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             //TODO: put the right values in
-            intakeMotor.setVelocity(0.1);
+            intakeMotor.setVelocity(537.7 * 100 / 60);
             return false;
         }
     }
