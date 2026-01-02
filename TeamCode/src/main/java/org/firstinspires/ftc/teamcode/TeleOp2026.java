@@ -49,7 +49,8 @@ public class TeleOp2026 extends OpMode {
         launchMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         launchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftLaunchServo.setDirection(DcMotorSimple.Direction.REVERSE);
-        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);         backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     @Override
     public void loop() {
@@ -99,7 +100,7 @@ public class TeleOp2026 extends OpMode {
             launchMotor.setVelocity(0);
         }
 
-        //intake of despair
+        //intake mechanism
         if (gamepad2.left_bumper == true) //start intake
         {
             intakeToggle = true;
@@ -108,15 +109,12 @@ public class TeleOp2026 extends OpMode {
         {
             intakeToggle = false;
         }
-        if (intakeToggle) {
-             /*
-             I used the same tps of the flywheel cause it's similar
-             28 tpr * 300 rpm seems right
-             If we actually wanted the motor at all 312 rpm we could ig
-              */
+        if (intakeToggle)
+        {
             intakeMotor.setVelocity(INTAKE_TICKS_PER_SECOND);
         }
-        else {
+        else
+        {
             intakeMotor.setVelocity(0);
         }
 
