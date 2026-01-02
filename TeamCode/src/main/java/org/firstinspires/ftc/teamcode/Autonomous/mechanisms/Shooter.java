@@ -15,6 +15,7 @@ public class Shooter {
         rightLaunchServo = hardwareMap.get(CRServo.class, "launchRightServo");
     }
     public class RunShoot implements Action {
+        private boolean initialized = false;
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
             //see idk what power carter usually drags it in on but I have to assume its full power so we'll go with that

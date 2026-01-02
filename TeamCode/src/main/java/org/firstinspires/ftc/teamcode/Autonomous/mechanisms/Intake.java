@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous.mechanisms;
 
 import androidx.annotation.NonNull;
 
+
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
@@ -18,16 +19,23 @@ public class Intake {
     DcMotorEx intakeMotor;
     public Intake(HardwareMap hardwareMap) {
         intakeMotor  = hardwareMap.get(DcMotorEx.class, "intakeIntakeMotor");
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeMotor.setDirection(DcMotorEx.Direction.FORWARD);
     }
     public class RunIntake implements Action {
+        private boolean initialized = false;
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            //TODO: put the right values in
-            intakeMotor.setVelocity(537.7 * 100 / 60);
+            if (!initialized) {
+                intakeMotor.setVelocity(537.7 * 100 / 60);
+                initialized = true;
+            }
             return false;
         }
     }
-    public Action runIntake() { return new RunIntake(); }
+    public Action runIntake() {
+        return new RunIntake();
+    }
     public class StopIntake implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -35,5 +43,7 @@ public class Intake {
             return false;
         }
     }
-    public Action stopIntake() { return new StopIntake(); }
+    public Action stopIntake() {
+        return new StopIntake();
+    }
 }
