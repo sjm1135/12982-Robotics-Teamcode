@@ -18,15 +18,15 @@ public class Launch {
         launchMotor.setDirection(DcMotorEx.Direction.FORWARD);
     }
     public class RunLaunch implements Action {
-        private boolean initialized = false;
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
-            //TODO: put the right values in
             launchMotor.setVelocity(3000 * 28 / 60);
             return false;
         }
     }
-    public Action runLaunch() { return new Launch.RunLaunch(); }
+    public Action runLaunch() {
+        return new Launch.RunLaunch();
+    }
     public class StopLaunch implements Action {
         @Override
         public boolean run(@NonNull TelemetryPacket telemetryPacket) {
@@ -34,5 +34,7 @@ public class Launch {
             return false;
         }
     }
-    public Action stopLaunch() { return new Launch.StopLaunch(); }
+    public Action stopLaunch() {
+        return new Launch.StopLaunch();
+    }
 }

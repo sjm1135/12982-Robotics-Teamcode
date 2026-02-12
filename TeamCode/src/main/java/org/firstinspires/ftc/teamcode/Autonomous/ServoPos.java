@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous (name="TimeBased2026")
-public class TimeBasedShooter2026 extends LinearOpMode {
+@Autonomous (name="ServoPos", group = "Autonomous")
+public class ServoPos extends LinearOpMode {
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
@@ -21,7 +21,7 @@ public class TimeBasedShooter2026 extends LinearOpMode {
     private Servo leftPosControl;
     private Servo rightPosControl;
     private double speedControl = 0.4;
-    private double TARGET_RPM = 3000;
+    private double TARGET_RPM = 4000;
     private final double WHEEL_WHEEL_DIAMETER = 4.094; //in inches
     private final double TICKS_PER_REVOLUTION_WHEELS = 2000; //for wheels
     private final double FLYWHEEL_DIAMETER = 3.78;
@@ -53,35 +53,22 @@ public class TimeBasedShooter2026 extends LinearOpMode {
         launchMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         leftLaunchServo.setDirection(DcMotorSimple.Direction.REVERSE);
         waitForStart();
-        intakeMotor.setVelocity(INTAKE_TICKS_PER_SECOND);
-        launchMotor.setVelocity(FLYWHEEL_TICKS_PER_SECOND);
+        leftPosControl.setPosition(0);
+        rightPosControl.setPosition(1);
+        double servoPos = 0.4;
+        double servoPo = 1;
+        leftPosControl.setPosition(servoPos);
+        rightPosControl.setPosition(1-servoPos);
         sleep(4000);
-        drive();
-        sleep(4000);
-        for(int i = 0; i < 2; i++) {
-
-            leftLaunchServo.setPower(1);
-            rightLaunchServo.setPower(1);
-
-            sleep(1000);
-
-            leftLaunchServo.setPower(0);
-            rightLaunchServo.setPower(0);
-
-            sleep(1000);
-            intakeMotor.setVelocity(INTAKE_TICKS_PER_SECOND);
-
+        leftPosControl.setPosition(servoPo);
+        rightPosControl.setPosition(1-servoPo);
+        boolean on = true;
+        while (on)
+        {
+            double leftPos = leftPosControl.getPosition();
+            double rightPos = rightPosControl.getPosition();
+            telemetry.addData("LeftPos: ", leftPos);
+            telemetry.addData("RightPos: ", rightPos);
         }
-    }
-    public void drive() {
-        frontLeft.setPower(wheelPow);
-        frontRight.setPower(wheelPow);
-        backLeft.setPower(wheelPow);
-        backRight.setPower(wheelPow);
-        sleep(250);
-        frontLeft.setPower(0);
-        frontRight.setPower(0);
-        backLeft.setPower(0);
-        backRight.setPower(0);
     }
 }
